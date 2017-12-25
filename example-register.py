@@ -1,3 +1,12 @@
+"""
+参考：
+
+http://docs.jinkan.org/docs/flask/blueprints.html#id4
+
+蓝图的作用是可以分离化的构造RESTful API
+
+"""
+
 from flask import Blueprint, render_template, abort
 from jinja2 import TemplateNotFound
 
