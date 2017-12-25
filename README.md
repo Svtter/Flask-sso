@@ -15,7 +15,7 @@ Python3
 ## 安装
 
 ```
-pip install Flask
+pip install -r requirements.pip
 ```
 
 ## 运行
