@@ -1,5 +1,6 @@
 # sso单点登录系统代码目录
 
+有疑问，查看[开发文档](https://github.com/Svtter/Flask-sso/wiki)
 
 ## 开发环境
 
