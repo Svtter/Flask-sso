@@ -52,15 +52,16 @@ def login_route():
         else:
             try:
                 info = request.json
-                user = User.query.filter_by(username=info['username']).fisrt()
+                user = User.query.filter_by(username=info['username']).first()
                 if user.password == info['password']:
                     tokenid = generateToken()
                     token = Token(tokenid, user.username)
                     db.session.add(token)
                     db.session.commit()
-                    return jsonify({'status': 'success', 'token': token})
+                    return jsonify({'status': 'success', 'token': tokenid})
             except Exception as e:
-                return jsonify({'status': 'failed'})
+                print(e)
+                return jsonify({'status': 'failed'}), 400
         
 
 @login_bp.route('/logout', methods=['POST', 'GET'])
@@ -92,11 +93,13 @@ def logout_route():
         else:
             info = request.json
             try:
-                token = Token.query.filter_by(info['username']).first()
+                token = Token.query.filter_by(username=info['username']).first()
                 if token.tokenid == info['tokenid']:
                     db.session.delete(token)
+                    db.session.commit()
                     return jsonify({'status': 'success', 'username': info['username']})
                 else:
                     return jsonify({'status': 'failed'})
             except Exception as e:
-                return jsonify({"status": "failed"})
+                print(e)
+                return jsonify({"status": "failed"}), 400

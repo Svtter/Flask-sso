@@ -22,7 +22,6 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 # 初始化数据库
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data/data.sqlite')
-app.config['secret_key'] = 'dsfdsfasdac12!!ewfdsa23fdssfa21#@'
 
 db.init_app(app)
 
@@ -35,6 +34,7 @@ admin.add_view(ModelView(Token, db.session))
 
 manager = Manager(app)
 
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 @app.route('/')
 def hello_world():

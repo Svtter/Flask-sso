@@ -27,7 +27,7 @@ def validate_token_route():
                 return '<h1>未登录</h1>'
         except Exception as e:
             print(e)
-            return '<h1>未登录</h1>'
+            return '<h1>未登录</h1>', 400
 
     else:
         if not request.json:
@@ -36,10 +36,11 @@ def validate_token_route():
         else:
             try:
                 info = request.json
-                token = Token.query.filter_by(tokenid=info['token']).first()
+                token = Token.query.filter_by(tokenid=info['tokenid']).first()
                 if token:
                     return jsonify({'status': 'logined'})
                 else:
                     return jsonify({'status': 'unlogined'})
             except Exception as e:
-                return jsonify({'status': 'failed'})
+                print(e)
+                return jsonify({'status': 'failed'}), 400
