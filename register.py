@@ -10,12 +10,15 @@ def register_endpoint():
         return render_template('register.html')
     else:
         if not request.json:
-            username = request.form['username']
-            password = request.form['password']
-            user = User(username, password)
-            db.session.add(user)
-            db.session.commit()
-            return 'success'
+            try:
+                username = request.form['username']
+                password = request.form['password']
+                user = User(username, password)
+                db.session.add(user)
+                db.session.commit()
+                return 'success'
+            except Exception as e:
+                return '<h1>用户名重复</h1>'
             
         else:
             try:

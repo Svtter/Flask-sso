@@ -79,7 +79,7 @@ def logout_route():
             else:
                 return '<h1>凭据错误</h1>'
         except Exception as e:
-            return '凭据错误'
+            return '<h1>未登录</h1>'
         
     else:
         if not request.json:
