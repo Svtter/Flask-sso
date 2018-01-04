@@ -8,6 +8,7 @@
 
 from flask import Blueprint, jsonify, abort, request
 from model import Token
+from utils import auth_login
 
 token_bp = Blueprint('token_bp', __name__)
 
@@ -20,15 +21,10 @@ def validate_token_route():
     """
     if request.method == 'GET':
         try:
-            username = request.cookies.get('username')
-            tokenid = request.cookies.get('tokenid')
-            
-            token = Token.query.filter_by(tokenid=tokenid).first()
-            # TODO: 对于过期的方法修正
-            if token.username == username:
+            if auth_login():
                 return '<h1>已登录</h1>'
             else:
-                return '<h1>凭证错误</h1>'
+                return '<h1>未登录</h1>'
         except Exception as e:
             print(e)
             return '<h1>未登录</h1>'

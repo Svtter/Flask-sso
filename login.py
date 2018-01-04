@@ -6,9 +6,10 @@
 
 from flask import Blueprint, abort, jsonify, request, make_response, render_template
 from model import User, Token, db
-from utils import generateToken
+from utils import generateToken, auth_login
 
 login_bp = Blueprint('login_bp', __name__)
+
 
 @login_bp.route('/login', methods=['POST', 'GET']) # 需要填写method
 def login_route():
@@ -18,7 +19,10 @@ def login_route():
     浏览器中输入: localhost:5000/login
     """
     if request.method == 'GET':
-        return render_template('login.html')
+        if auth_login():
+            return '<h1>已登录</h1>'
+        else:
+            return render_template('login.html')
 
     else:
         if not request.json:

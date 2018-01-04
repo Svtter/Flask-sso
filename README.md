@@ -21,3 +21,10 @@ python3 app.py runserver
 
 ## 测试跨域
 
+
+## TODO:
+
+- [ ] admin用户控制
+- [ ] token过期
+- [ ] 登录页面验证
+

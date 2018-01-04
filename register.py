@@ -16,7 +16,7 @@ def register_endpoint():
                 user = User(username, password)
                 db.session.add(user)
                 db.session.commit()
-                return 'success'
+                return '<h1>注册成功</h1>'
             except Exception as e:
                 return '<h1>用户名重复</h1>'
             
