@@ -21,6 +21,7 @@ python3 app.py runserver
 
 ## 测试跨域
 
+`test/test.py`
 
 ## TODO:
 
