@@ -6,7 +6,7 @@
 """
 
 import os
-from flask import Flask, redirect
+from flask import Flask, redirect, render_template
 from flask_script import Manager
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
@@ -21,8 +21,8 @@ app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 # 初始化数据库
-app. config['SQLALCHEMY_DATABASE_URI'] =\
-    'sqlite:///' + os.path.join(basedir, 'data/data.sqlite')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data/data.sqlite')
+app.config['secret_key'] = 'dsfdsfasdac12!!ewfdsa23fdssfa21#@'
 
 db.init_app(app)
 
@@ -41,7 +41,7 @@ def hello_world():
     """
     直接跳转管理系统
     """
-    return redirect('/admin')
+    return render_template('home.html')
 
 if __name__ == '__main__':
     manager.run()

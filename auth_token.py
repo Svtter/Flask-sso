@@ -11,24 +11,39 @@ from model import Token
 
 token_bp = Blueprint('token_bp', __name__)
 
-@token_bp.route('/validate_token') # 需要填写method
+@token_bp.route('/validate_token', methods=['POST', 'GET']) # 需要填写method
 def validate_token_route():
     """
     在此处填写验证token的相关代码
 
     浏览器中输入: localhost:5000/validate_token
     """
-
-    if not request.json:
-        abort(400)
-    
-    else:
+    if request.method == 'GET':
         try:
-            info = request.json
-            token = Token.query.all(tokenid=info['token'])
-            if token:
-                return jsonify({'status': 'logined'})
+            username = request.cookies.get('username')
+            tokenid = request.cookies.get('tokenid')
+            
+            token = Token.query.filter_by(tokenid=tokenid).first()
+            # TODO: 对于过期的方法修正
+            if token.username == username:
+                return '<h1>已登录</h1>'
             else:
-                return jsonify({'status': 'unlogined'})
+                return '<h1>凭证错误</h1>'
         except Exception as e:
-            return jsonify({'status': 'failed'})
+            print(e)
+            return '<h1>未登录</h1>'
+
+    else:
+        if not request.json:
+            abort(400)
+        
+        else:
+            try:
+                info = request.json
+                token = Token.query.filter_by(tokenid=info['token']).first()
+                if token:
+                    return jsonify({'status': 'logined'})
+                else:
+                    return jsonify({'status': 'unlogined'})
+            except Exception as e:
+                return jsonify({'status': 'failed'})
