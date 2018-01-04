@@ -24,7 +24,7 @@ python3 app.py runserver
 
 ## TODO:
 
-- [ ] admin用户控制
 - [ ] token过期
 - [ ] 登录页面验证
+- [ ] 用户已在线处理
 
