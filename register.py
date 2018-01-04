@@ -1,68 +1,28 @@
 #!/usr/bin/env python
-# coding: utf-8
-"""
-注册模块，需要提供用户的信息
-"""
+from flask import Blueprint, render_template, request
+from model import User, db
 
-# class User():
-#     def __init__(self):
-#         self.name = 'test'
-#         self.password = 'test'
-#
-#
-# if __name__ == '__main__':
-#     user = User()
-#     print(user.name)
-#     print(user.password)
+register_bp = Blueprint('register_bp', __name__)
 
-
-import sqlite3
-
-conn = sqlite3.connect('sso.db')
-
-print("Opened database successfully");
-
-c = conn.cursor()
-
-# 创建数据表
-# c.execute('''CREATE TABLE USER
-#        (ID INT PRIMARY KEY     NOT NULL,
-#        NAME           TEXT    NOT NULL,
-#        PASSWORD       INT     NOT NULL);''')
-# print("Table created successfully");
-# conn.commit()
-# conn.close()
-
-# 在表中创建记录
-# c.execute("INSERT INTO USER (ID,NAME,PASSWORD) \
-#       VALUES (1, 'user1', '123456' )");
-#
-# c.execute("INSERT INTO USER (ID,NAME,PASSWORD) \
-#       VALUES (2, 'user2', '123456')");
-#
-# c.execute("INSERT INTO USER (ID,NAME,PASSWORD) \
-#       VALUES (3, 'user3', '123456' )");
-#
-# c.execute("INSERT INTO USER (ID,NAME,PASSWORD) \
-#       VALUES (4, 'user4', '123456' )");
-#
-# conn.commit()
-# print("Records created successfully");
-# conn.close()
-
-
-#从表中获取并显示记录
-def  login(password,username,url):
-   cursor = c.execute("SELECT id, name, password  from USER")
-   # password=123456
-   # username="user3"
-   for line in cursor:
-      if((line[1]==username)and (line[2]==password)):
-         print(line)
-         print("用户登陆成功")
-
-
-   conn.close()
-
-# 测试用
-login(123456,"user1","null")
+@register_bp.route('/register', methods=['GET', 'POST'])
+def register_endpoint():
+    if request.method == 'GET':
+        return render_template('register.html')
+    else:
+        if not request.json:
+            username = request.form['username']
+            password = request.form['password']
+            user = User(username, password)
+            db.session.add(user)
+            db.session.commit()
+            return 'success'
+            
+        else:
+            try:
+                info = request.json
+                user = User(info['username'], info['password'])
+                db.session.add(user)
+                db.session.commit()
+                return jsonify({'status': 'success'})
+            except Exception as e:
+                return jsonify({'status': 'failed'})
